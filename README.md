@@ -4,6 +4,7 @@ Project to create 2D study room that has chatting and Youtube music play functio
 
 
 ## Checklist
+### Map creation
 - Download assets
     - character
     - map
@@ -12,6 +13,7 @@ Project to create 2D study room that has chatting and Youtube music play functio
     - layering the map
     - collision
 
+### Player and Map
 - Set up the project
 - Render the map
 - Create player
@@ -19,13 +21,16 @@ Project to create 2D study room that has chatting and Youtube music play functio
 - Player collision
 - Player movement animation
 
+### Chatting feature
 - Add chatting box
 - chatting feature
 - server for chatting
 
+### Youtube Music feature
 - Youtube music play feature
 - Share music with people in same room (same server)
 
+### AI friend feature
 - Add AI friend
 
 ## References
