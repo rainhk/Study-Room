@@ -5,18 +5,18 @@ Project to create 2D study room that has chatting and Youtube music play functio
 
 ## Checklist
 ### Map creation
-- Download assets
-    - character
-    - map
-- Create a map with Tiles
-    - Deign the map
-    - layering the map
-    - collision
+- ~~Download assets~~
+    - ~~character~~
+    - ~~map~~
+- ~~Create a map with Tiles~~
+    - ~~Deign the map~~
+    - ~~Layering the map~~
+    - ~~Collision~~
 
 ### Player and Map
-- Set up the project
-- Render the map
-- Create player
+- ~~Set up the project~~
+- ~~Render the map~~
+- ~~Create player~~
 - Move Player
 - Player collision
 - Player movement animation
