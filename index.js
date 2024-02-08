@@ -1,6 +1,24 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+// fetch('collision_map.json')
+//     .then((response) => response.json())
+//     .then((json) => console.log(json));
+
+fetch('collision_map1.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // JSON 데이터를 사용하는 코드 작성
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
 
 canvas.width = 1024
 canvas.height = 576
@@ -73,18 +91,6 @@ function animate(){
         playerImage.width/4,playerImage.height)
 
     keyPressed()
-    // if (keys.w.pressed) {
-    //     background.position.y += 3
-    // }
-    // else if (keys.w.pressed) {
-    //     background.position.y += 3
-    // }
-    // else if (keys.w.pressed) {
-    //     background.position.y += 3
-    // }
-    // else if (keys.w.pressed) {
-    //     background.position.y += 3
-    // }
 }
 
 animate()
