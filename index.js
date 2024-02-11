@@ -1,30 +1,51 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-// fetch('collision_map.json')
-//     .then((response) => response.json())
-//     .then((json) => console.log(json));
-
-fetch('collision_map1.json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    // JSON 데이터를 사용하는 코드 작성
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
-
 canvas.width = 1024
 canvas.height = 576
 
-c.fillStyle = 'white'
-c.fillRect(0,0, canvas.width, canvas.height)
+const collisionMap = []
+for (let i = 1; i < collision.length; i+=70){
+    // console.log(collision.slice(i, i+70))
+    collisionMap.push(collision.slice(i, i+70))
+}
+
+class Boundary{
+    static width = 56
+    static height = 56
+    constructor({position}) {
+    this.position = position
+    this.width = 56
+    this.height = 56
+    }
+
+    draw () {
+        c.fillStyle = 'red'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
+}
+
+const boundaries = []
+const offset = {
+    x: -620,
+    y: -200
+}
+
+collisionMap.forEach((row, i) => {
+    row.forEach((value, j) => {
+        if (value == 288) {
+        boundaries.push(
+            new Boundary({
+                position: {
+                    x: j * Boundary.width + offset.x,
+                    y: i * Boundary.height + offset.y
+                }
+            })
+        )}
+    })
+})
+
+console.log(boundaries)
 
 const mapImage = new Image()
 mapImage.src = './image/room map_zoomed.png'
@@ -43,10 +64,11 @@ class Sprite {
     }
 }
 
+
 const background = new Sprite({
     position: {
-    x: -600,
-    y: -200
+    x: offset.x,
+    y: offset.y
     },
     image: mapImage
 })
@@ -84,6 +106,9 @@ function keyPressed(){
 function animate(){
     window.requestAnimationFrame(animate)
     background.draw()
+    boundaries.forEach(boundary => {
+        boundary.draw()
+    })
     c.drawImage(playerImage,
         0,0,playerImage.width/4,playerImage.height, 
         (canvas.width - (playerImage.width/4)) / 2 , 
