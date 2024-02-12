@@ -6,7 +6,6 @@ canvas.height = 576
 
 const collisionMap = []
 for (let i = 1; i < collision.length; i+=70){
-    // console.log(collision.slice(i, i+70))
     collisionMap.push(collision.slice(i, i+70))
 }
 
@@ -19,9 +18,9 @@ class Boundary{
     this.height = 56
     }
 
-    draw () {
+    draw() {
         c.fillStyle = 'red'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.fillRect(this.position.x+56, this.position.y, this.width, this.height)
     }
 }
 
@@ -45,7 +44,6 @@ collisionMap.forEach((row, i) => {
     })
 })
 
-console.log(boundaries)
 
 const mapImage = new Image()
 mapImage.src = './image/room map_zoomed.png'
@@ -54,16 +52,42 @@ const playerImage = new Image()
 playerImage.src = './image/playerDown.png'
 
 class Sprite {
-    constructor({position, velocity, image}) {
+    constructor({position, velocity, image, frames = {max: 1}}) {
         this.position = position
         this.image = image
+        this.frames = frames
+
+        this.image.onload = () => {
+            this.width = this.image.width / this.frames.max
+            this.height = this.height
+        }
+        
     }
 
     draw() {
-        c.drawImage(this.image, this.position.x, this.position.y)
+        c.drawImage(
+            this.image,
+            0,
+            0,
+            this.image.width/ this.frames.max,
+            this.image.height, 
+            this.position.x,
+            this.position.y,
+            this.image.width/ this.frames.max,
+            this.image.height)
     }
 }
 
+const player = new Sprite({
+    position: {
+        x: (canvas.width - (192/4)) / 2 , 
+        y: (canvas.height - 68) / 2
+    },
+    image: playerImage,
+    frames: {
+        max: 4
+    }
+})
 
 const background = new Sprite({
     position: {
@@ -91,17 +115,37 @@ const keys = {
 function keyPressed(){
     if (keys.w.pressed) {
         background.position.y += 3
+        boundaries.forEach(boundary => {
+            boundary.position.y += 3
+        })
     }
     else if (keys.s.pressed) {
         background.position.y -= 3
+        boundaries.forEach(boundary => {
+            boundary.position.y -= 3
+        })
     }
     else if (keys.d.pressed) {
         background.position.x -= 3
+        boundaries.forEach(boundary => {
+            boundary.position.x -= 3
+        })
     }
     else if (keys.a.pressed) {
         background.position.x += 3
+        boundaries.forEach(boundary => {
+            boundary.position.x += 3
+        })
     }
 }
+
+const testBoundary = new Boundary({
+    position: {
+        x: -600,
+        y: -200
+    }
+})
+
 
 function animate(){
     window.requestAnimationFrame(animate)
@@ -109,11 +153,9 @@ function animate(){
     boundaries.forEach(boundary => {
         boundary.draw()
     })
-    c.drawImage(playerImage,
-        0,0,playerImage.width/4,playerImage.height, 
-        (canvas.width - (playerImage.width/4)) / 2 , 
-        (canvas.height - playerImage.height) / 2,
-        playerImage.width/4,playerImage.height)
+    player.draw()
+    
+    // if (player.position.x + player.width >= )
 
     keyPressed()
 }
