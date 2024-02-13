@@ -20,7 +20,7 @@ class Boundary{
 
     draw() {
         c.fillStyle = 'red'
-        c.fillRect(this.position.x+56, this.position.y, this.width, this.height)
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
 
@@ -112,50 +112,78 @@ const keys = {
     }
 }
 
+const testBoundary = new Boundary({
+    position: {
+        x: 200,
+        y: 200
+    }
+})
+
+const movables = [background, ...boundaries, testBoundary]
+
+
 function keyPressed(){
     if (keys.w.pressed) {
-        background.position.y += 3
-        boundaries.forEach(boundary => {
+        movables.forEach(boundary => {
             boundary.position.y += 3
         })
     }
     else if (keys.s.pressed) {
-        background.position.y -= 3
-        boundaries.forEach(boundary => {
+        movables.forEach(boundary => {
             boundary.position.y -= 3
         })
     }
     else if (keys.d.pressed) {
-        background.position.x -= 3
-        boundaries.forEach(boundary => {
+        movables.forEach(boundary => {
             boundary.position.x -= 3
         })
     }
     else if (keys.a.pressed) {
-        background.position.x += 3
-        boundaries.forEach(boundary => {
+        movables.forEach(boundary => {
             boundary.position.x += 3
         })
     }
 }
 
-const testBoundary = new Boundary({
-    position: {
-        x: -600,
-        y: -200
-    }
-})
+// const movables = [background, ...boundaries] will put all items in boundaries to one array
+
+function rectangularCollision({rectangle1, rectangle2}){
+    // console.log(rectangle1.position.x + rectangle1.width >= rectangle2.position.x)
+    return (
+        rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
+        rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+        rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
+        rectangle1.position.y + rectangle1.height >= rectangle2.position.y
+    )
+}
+
 
 
 function animate(){
     window.requestAnimationFrame(animate)
     background.draw()
-    boundaries.forEach(boundary => {
-        boundary.draw()
-    })
+    // boundaries.forEach(boundary => {
+    //     boundary.draw()
+    //     if (
+    //         rectangularCollision({
+    //             rectangle1: player,
+    //             rectangle2: boundary
+    //         })
+    //     ) {
+    //         console.log("colliding")
+    //     }
+    //     })
+
+    testBoundary.draw()
+
+    if(rectangularCollision({
+        rectangle1: player,
+        rectangle2: testBoundary
+    })){
+        console.log("colliding")
+    }
+
     player.draw()
-    
-    // if (player.position.x + player.width >= )
 
     keyPressed()
 }
